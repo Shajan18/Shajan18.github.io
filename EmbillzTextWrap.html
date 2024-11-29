@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Wrapping Tool with Authentication</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling with Full-Screen Background */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://www.medaptus.com/wp-content/uploads/2022/11/AdobeStock_283775823-1024x632.jpeg') no-repeat center center fixed; /* Full screen background */
+            background-size: cover;
+            color: #f1f1f1;
+            position: relative; /* Necessary for positioning images */
+        }
+
+        /* Additional Image Styling */
+        .additional-image {
+            position: absolute;
+            top: 15%; /* Position this image 15% from the top */
+            left: 50%;
+            transform: translateX(-50%); /* Center the image horizontally */
+            width: 200px; /* Adjust size of the image */
+            height: auto;
+            z-index: 5; /* Ensures it stays above the background but below other elements */
+        }
+
+        /* Login Container Styling */
+        .login-container {
+            background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            animation: slideIn 0.6s ease-in-out;
+            z-index: 10; /* Ensures the login container is above the background */
+        }
+
+        /* Container Styling for the notes wrapping tool */
+        .container {
+            display: none; /* Hide the tool until password is authenticated */
+            background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            width: 600px;
+            max-width: 90%;
+            text-align: center;
+            animation: slideIn 0.6s ease-in-out;
+        }
+
+        /* Header */
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #ff6f61; /* Accent color */
+            margin-bottom: 20px;
+        }
+
+        /* Textarea Styling */
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #1e293b; /* Dark grey */
+            color: #f1f1f1;
+            resize: none;
+            outline: none;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        textarea::placeholder {
+            color: #8a9aa5; /* Placeholder text color */
+        }
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Gradient button */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 126, 95, 0.4);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(255, 126, 95, 0.6);
+        }
+
+        /* Output Box */
+        .output {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #12191f; /* Darker grey */
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+            margin-top: 20px;
+        }
+
+        .output::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .output::-webkit-scrollbar-thumb {
+            background: #ff7e5f;
+            border-radius: 4px;
+        }
+
+        .output::-webkit-scrollbar-thumb:hover {
+            background: #feb47b;
+        }
+
+        /* Line Styling */
+        .line {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            font-size: 15px;
+            color: #f1f1f1;
+        }
+
+        .line:hover {
+            background: #ff6f61;
+            color: white;
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(255, 111, 97, 0.4);
+        }
+
+        /* Animation */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Additional Image -->
+    <img src="file://rtinas01.rti.reimbtech.com/Citrix_Profiles/smajeeth/Downloads/image%20(5).png" alt="OptimizeRCM" class="additional-image"> <!-- Replace with your image URL -->
+
+    <!-- Login Screen -->
+    <div class="login-container" id="loginContainer">
+        <h1>Enter Password to Access Tool</h1>
+        <input type="password" id="password" placeholder="Enter your password" />
+        <button onclick="authenticate()">Login</button>
+    </div>
+
+    <!-- Notes Wrapping Tool -->
+    <div class="container" id="notesContainer">
+        <h1>EMBILLZ NOTES WRAP TOOL</h1>
+        <textarea id="inputText" placeholder="Type or paste your Notes here..."></textarea>
+        <button onclick="wrapText()">Wrap Notes</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        // Password Authentication Function
+        const correctPassword = "Optimize@2024"; // Change this to your desired password
+
+        function authenticate() {
+            const passwordInput = document.getElementById("password").value;
+
+            if (passwordInput === correctPassword) {
+                // Hide the login screen and show the notes tool
+                document.getElementById("loginContainer").style.display = "none";
+                document.getElementById("notesContainer").style.display = "block";
+            } else {
+                alert("Incorrect password. Please try again.");
+            }
+        }
+
+        // Function to wrap text into 52-character lines
+        function wrapText() {
+            const input = document.getElementById("inputText").value;
+            const output = document.getElementById("output");
+            output.innerHTML = ""; // Clear previous output
+
+            const lines = [];
+            const words = input.split(" ");
+            let currentLine = "";
+
+            words.forEach(word => {
+                if ((currentLine + word).length <= 52) {
+                    currentLine += (currentLine ? " " : "") + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            });
+            if (currentLine) lines.push(currentLine);
+
+            lines.forEach(line => {
+                const lineDiv = document.createElement("div");
+                lineDiv.className = "line";
+                lineDiv.innerText = line;
+                lineDiv.onclick = () => {
+                    const range = document.createRange();
+                    range.selectNodeContents(lineDiv);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                };
+                output.appendChild(lineDiv);
+            });
+        }
+    </script>
+</body>
+</html>
