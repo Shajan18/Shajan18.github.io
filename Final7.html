@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Taking Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #login-section {
+            text-align: center;
+            background-image: url('office.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        #login-form {
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        input, button {
+            width: 90%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF; /* Professional blue color */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #note-taking-section {
+            margin: 20px;
+        }
+
+        #input-area {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        #result-area {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            cursor: text;
+            user-select: text;
+            line-height: 1.5;
+        }
+
+        .line {
+            padding: 2px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-section">
+        <div id="login-form">
+            <h2>Welcome to RTI PROJECT (EMHM)</h2>
+            <p>Please log in to access the Notes Taking Tool</p>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <div id="note-taking-section" style="display:none;">
+        <h2>Notes Creation</h2>
+        <textarea id="input-area" placeholder="Type or Paste your notes here..."></textarea>
+        <div id="result-area" contenteditable="true" spellcheck="false" tabindex="0"></div>
+    </div>
+
+    <script>
+        // Hardcoded username and password (for demonstration purposes)
+        const validUsername = "notes2024";
+        const validPassword = "Optimize@2024";
+
+        // Function to check login credentials
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === validUsername && password === validPassword) {
+                // If credentials are valid, show the note-taking tool
+                document.getElementById("login-section").style.display = "none";
+                document.getElementById("note-taking-section").style.display = "block";
+            } else {
+                // If credentials are invalid, show an error message
+                alert("Invalid username or password. Please try again.");
+            }
+        }
+
+        // Listen for the Enter key to trigger login
+        document.getElementById("password").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                login();
+            }
+        });
+
+        // Function to wrap text to a maximum of 52 characters per line
+        function wrapText(inputText) {
+            const maxLineLength = 52;
+            const words = inputText.split(' ');
+            let wrappedText = '';
+            let currentLine = '';
+
+            words.forEach(word => {
+                if (currentLine.length + word.length + 1 <= maxLineLength) {
+                    if (currentLine.length > 0) {
+                        currentLine += ' ';
+                    }
+                    currentLine += word;
+                } else {
+                    wrappedText += currentLine + '\n';
+                    currentLine = word;
+                }
+            });
+
+            if (currentLine.length > 0) {
+                wrappedText += currentLine;
+            }
+
+            return wrappedText;
+        }
+
+        const inputArea = document.getElementById('input-area');
+        const resultArea = document.getElementById('result-area');
+
+        inputArea.addEventListener('input', () => {
+            const wrappedText = wrapText(inputArea.value);
+            resultArea.innerHTML = '';
+            const lines = wrappedText.split('\n');
+            lines.forEach(line => {
+                const lineElement = document.createElement('div');
+                lineElement.classList.add('line');
+                lineElement.textContent = line;
+                resultArea.appendChild(lineElement);
+            });
+        });
+
+        resultArea.addEventListener('click', (e) => {
+            if (e.target.classList.contains('line')) {
+                const range = document.createRange();
+                const selection = window.getSelection();
+                range.selectNodeContents(e.target);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        });
+    </script>
+</body>
+</html>
