@@ -1,0 +1,103 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+/* Login Page Styles */
+body.login-page {
+  background: url('background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Notes Page Styles */
+body.notes-page {
+  background: url('image2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  padding: 20px;
+}
+
+header h1 {
+  text-align: center;
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.tool-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.input-box,
+.output-box {
+  width: 45%;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Styling for responsive design */
+@media (max-width: 768px) {
+  .tool-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
